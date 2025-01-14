@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Future Question</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <style>
+   
+    /* För mobiler */
+@media (max-width: 600px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+/* För surfplattor */
+@media (min-width: 601px) and (max-width: 1024px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+/* För datorer */
+@media (min-width: 1025px) {
+  body {
+    font-size: 18px;
+  }
+}
+
+    /* Stående (portrait) */
+@media (orientation: portrait) {
+  body {
+    background-color: lightblue;
+  }
+}
+
+/* Liggande (landscape) */
+@media (orientation: landscape) {
+  body {
+    background-color: lightgreen;
+  }
+}
+
+    @font-face {
+      font-family: 'Gaya';
+      src: url('https://cdn.glitch.global/ab1097cb-bfac-411e-a076-1bcdbf716b13/GayaTrial-Regular.otf?v=1736512733724') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    
+    @font-face {
+      font-family: 'Ninna';
+      src: url('https://cdn.glitch.global/ab1097cb-bfac-411e-a076-1bcdbf716b13/NinnaTrial-Regular.otf?v=1736519029919') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none; /* Ensures the element is hidden after fading */
+  }
+}
+    
+
+    /* Add the fadeOut class */
+    .fadeOut {
+      animation: fadeOut 2s forwards;
+    }
+    
+    
+    @keyframes smoothFadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+    
+    @keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+    
+body {
+  font-family: Gaya;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 10px;
+  position: relative;
+  flex-direction: column;
+  overflow: hidden;
+  background-image: url('https://cdn.glitch.global/ab1097cb-bfac-411e-a076-1bcdbf716b13/ram%202%20sss.png?v=1736772787318');
+  background-size: 90% 90%; /* Full width, 50% of height */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: black;
+  height: calc(100vh - 0px); /* Full viewport height minus padding */
+  width: calc(100vw - 40px); /* Full viewport width minus padding */
+}
+
+    .fade {
+      opacity: 1;
+      transition: opacity 2s ease;
+    }
+
+  .hidden {
+  opacity: 0;
+  pointer-events: none; /* Prevents interaction while fading out */
+  display: none; /* Ensures it disappears entirely */
+}
+
+
+   #inputContainer {
+  position: absolute; /* Allows independent positioning within #container */
+  top: 65%; /* Adjust this to control vertical positioning */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Perfect centering */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+    #userInput {
+      padding: 8px;
+      font-size: 1.2em;
+      font-family: Gaya;
+      width: 250px;
+      height: 40px;
+      border: 0px;
+      border-radius: 5px;
+      background-color: transparent;
+      color: #f7f499;
+      resize: none;
+      text-align: center;
+      line-height: 20px;
+      overflow-wrap: break-word;
+      caret-color: #f7f499;
+      position: relative;
+      margin-top: -90px;
+      margin-left: -15%;
+      
+      
+    }
+
+    #userInput::placeholder {
+      text-align: center;
+      color: #f7f499;
+      font-size: 1em;
+      font-family: gaya;
+      
+    }
+
+    
+    #userInput:focus {
+      outline: none;
+    }
+
+    #submitButton {
+      padding: 12px 20px;
+      font-size: 1em;
+      font-family: gaya;
+      margin-top: -20px;
+      background-color: transparent;
+      color: #f7f499;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: none; /* Initially hidden */
+      position: absolute;
+      
+      top: 57%;
+      transform: translateY(-50%);
+      left: 43%;
+      transform: translateX(-50%) translateY(-50%);
+      transition: all 1s ease;
+    }
+
+   /* #submitButton:hover {
+      background-color: transparent;
+      transform: scale(1.1);
+      
+      top: 57%;
+      transform: translateY(-50%);
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      transition: all 1s ease; } */
+    
+
+    #submitButton:focus {
+      outline: none;
+    }
+
+    #answer {
+      font-size: 1.2em;
+      color: #f7f499;
+      animation: smoothFadeIn 2s ease-in-out;
+      left: 50%;
+      top: 40%;
+      position: absolute;
+      transform: translateX(-50%);
+      z-index:100;
+    }
+
+    #resetButton {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 10px 15px;
+      background-color: transparent;
+      color: #f7f499;
+      font-family: gaya;
+      border: 0px solid black;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      opacity: 0;
+      transition: opacity 1s ease;
+      z-index: 9999;
+    }
+
+   .questionCircle {
+  width: 50px;
+  height: 50px;
+  background-color: #f7f499;
+     border: 2px solid black;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: absolute;
+  transition: all 1s ease;
+  opacity: 0;
+  z-index: 50;
+}
+
+    .expanded {
+      width: 500px;
+      height: 500px;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .expanded p {
+      text-align: center;
+      font-size: 18px;
+      color: black;
+    }
+    
+    #question {
+  max-width: 70%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  opacity: 1;
+  transition: opacity 2s ease;
+  margin-top: -5%;
+      z-index: 10000;
+   
+}
+
+    #redirectButton {
+       position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 15px;
+      background-color: transparent;
+      color: #f7f499;
+      font-family: gaya;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      opacity: 0;
+      transition: opacity 1s ease;
+      z-index: 9899;
+    }
+    
+  </style>
+</head>
+<body>
+
+  <div id="container">
+    
+    <img id="question" class="fade" src="https://cdn.glitch.global/ab1097cb-bfac-411e-a076-1bcdbf716b13/text2%20sss.png?v=1736773205650" alt="Question Image">
+
+    
+    <div id="inputContainer" class="fade hidden">
+      <textarea id="userInput" placeholder="..."></textarea>
+      <button id="submitButton">Ask</button>
+    </div>
+
+    <p id="answer" class="fade hidden">Yes</p>
+  </div>
+  
+
+  <button id="resetButton">I have more questions...</button>
+  
+  <button id="redirectButton">visit next site</button>
+
+  <script>
+const question = document.getElementById('question');
+    const inputContainer = document.getElementById('inputContainer');
+    const userInput = document.getElementById('userInput');
+    const submitButton = document.getElementById('submitButton');
+    const answer = document.getElementById('answer');
+    const resetButton = document.getElementById('resetButton');
+
+    let questionList = [];
+    let currentExpandedCircle = null;
+
+    
+    
+    setTimeout(() => {
+      question.classList.add('fade');
+    }, 2000);
+
+    setTimeout(() => {
+      inputContainer.classList.remove('hidden');
+      inputContainer.classList.add('fade');
+    }, 2000);
+
+    userInput.addEventListener('input', () => {
+      if (userInput.value.trim() !== "") {
+        submitButton.style.display = 'inline-block';
+      } else {
+        submitButton.style.display = 'none';
+      }
+    });
+
+    function handleSubmit() {
+      // Fade out the question with the fadeOut animation
+      question.classList.add('fadeOut');
+      inputContainer.classList.add('hidden');
+      submitButton.classList.add('hidden');
+
+      const randomAnswer = getRandomAnswer();
+      const userQuestion = userInput.value;
+
+      answer.textContent = randomAnswer;
+
+      questionList.push(userQuestion);
+
+      localStorage.setItem('questionList', JSON.stringify(questionList));
+
+     setTimeout(() => {
+        answer.classList.remove('hidden');
+        answer.classList.add('fade');
+        createQuestionCircles();
+        resetButton.style.opacity = 1;  // Show the reset button
+        resetButton.style.transition = "opacity 1s ease";
+        redirectButton.style.opacity = 1;  // Show the redirect button
+        redirectButton.style.transition = "opacity 1s ease";  // Add smooth transition
+      }, 3000);
+    }
+
+    function resetPage() {
+  // Remove the existing question circles
+  const existingCircles = document.querySelectorAll('.questionCircle');
+  existingCircles.forEach(circle => circle.remove());
+
+  // Reset the opacity of the reset button
+  resetButton.style.opacity = 0;
+  resetButton.style.transition = "opacity 1s ease";
+
+  // Hide the answer
+  answer.classList.add('hidden');
+
+  // Show the input container again and fade it in
+  inputContainer.classList.remove('hidden');
+  inputContainer.classList.add('fade');
+     
+  // Show the question image again
+  question.classList.remove('hidden');  // Ensure the image is not hidden
+  question.classList.add('fade');  // Add the fade class to show it smoothly
+
+  // Reset the user input and submit button visibility
+  userInput.value = ''; 
+  submitButton.style.display = 'none';
+
+  // Make sure to reset the submit button visibility and fade-in
+  submitButton.classList.remove('hidden');
+  submitButton.style.display = 'none';
+}
+
+
+
+
+    function getRandomAnswer() {
+      const answers = [
+        { answer: "Hmm, I don´t know", weight: 3 },
+        { answer: "Honestly, no", weight: 2 },
+        { answer: "I don´t see that for you", weight: 2 },
+        { answer: "You know what, yes!", weight: 2 },
+        { answer: "I can see it going both ways", weight: 2 },
+        { answer: "Depends on your next move", weight: 1 }
+      ];
+
+      const weightedAnswers = [];
+      answers.forEach(item => {
+        for (let i = 0; i < item.weight; i++) {
+          weightedAnswers.push(item.answer);
+        }
+      });
+
+      const randIndex = Math.floor(Math.random() * weightedAnswers.length);
+      return weightedAnswers[randIndex];
+    }
+
+    function createQuestionCircles() {
+      const existingCircles = document.querySelectorAll('.questionCircle');
+      existingCircles.forEach(circle => circle.remove());
+
+      questionList.forEach((questionText) => {
+        const circle = document.createElement('div');
+        circle.classList.add('questionCircle');
+        const randomX = Math.floor(Math.random() * (window.innerWidth - 50));
+        const randomY = Math.floor(Math.random() * (window.innerHeight - 50));
+        circle.style.left = randomX + 'px';
+        circle.style.top = randomY + 'px';
+
+        document.body.appendChild(circle);
+
+        setTimeout(() => {
+          circle.style.opacity = 1;
+        }, 3000);
+
+        circle.addEventListener('click', () => {
+          if (currentExpandedCircle && currentExpandedCircle !== circle) {
+            collapseCircle(currentExpandedCircle);
+          }
+          if (circle.classList.contains('expanded')) {
+            collapseCircle(circle);
+          } else {
+            expandCircle(circle, questionText);
+          }
+        });
+      });
+    }
+
+    function expandCircle(circle, questionText) {
+      currentExpandedCircle = circle;
+      circle.classList.add('expanded');
+      const p = document.createElement('p');
+      p.textContent = questionText;
+      circle.innerHTML = '';
+      circle.appendChild(p);
+    }
+
+    function collapseCircle(circle) {
+      circle.classList.remove('expanded');
+      circle.innerHTML = '';
+    }
+
+    window.onload = () => {
+      const savedData = localStorage.getItem('questionList');
+      if (savedData) {
+        questionList = JSON.parse(savedData);
+      }
+    };
+
+    submitButton.addEventListener('click', handleSubmit);
+    userInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        handleSubmit();
+      }
+    });
+
+    resetButton.addEventListener('click', resetPage);
+    
+    
+    // Add the redirect functionality here
+    redirectButton.addEventListener('click', () => {
+      // Replace the URL below with the website you want to redirect to
+     window.open('https://www.google.com/?client=safari', '_blank');   // Change to your desired URL
+    });
+    
+  </script>
+
+</body>
+</html>
